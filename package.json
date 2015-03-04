@@ -1,0 +1,24 @@
+{
+  "name": "img-loader",
+  "version": "1.0.0",
+  "description": "Image minimizing loader for webpack",
+  "dependencies": {
+    "loader-utils": "0.2.6"
+  },
+  "peerDependencies": {
+    "imagemin": "3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/thetalecrafter/img-loader.git"
+  },
+  "author": {
+    "name": "Andy VanWagoner",
+    "email": "thetalecrafter@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thetalecrafter/img-loader/issues"
+  },
+  "homepage": "https://github.com/thetalecrafter/img-loader"
+}

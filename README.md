@@ -2,9 +2,9 @@
 
 Image minimizing loader for webpack, meant to be used with [url-loader](https://github.com/webpack/url-loader) or [file-loader](https://github.com/webpack/file-loader)
 
-> Minify PNG, JPEG, GIF and SVG images with [imagemin](https://github.com/kevva/imagemin)
+> Minify PNG, JPEG, GIF and SVG images with [imagemin](https://github.com/imagemin/imagemin)
 
-*Issues with the minimized output should be reported [to imagemin](https://github.com/kevva/imagemin/issues).*
+*Issues with the minimized output should be reported [to imagemin](https://github.com/imagemin/imagemin/issues).*
 
 
 ## Install

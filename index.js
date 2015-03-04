@@ -5,7 +5,7 @@ module.exports = function(content) {
   this.cacheable && this.cacheable()
 
   var query = loaderUtils.parseQuery(this.query)
-	var minimize = ('minimize' in query.minimize) ? query.minimize : this.minimize
+	var minimize = ('minimize' in query) ? query.minimize : this.minimize
   if (!minimize) {
     return content
   }

@@ -1,6 +1,6 @@
 {
   "name": "img-loader",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Image minimizing loader for webpack",
   "dependencies": {
     "loader-utils": "0.2.6"

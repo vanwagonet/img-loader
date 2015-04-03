@@ -1,35 +1,41 @@
 var Imagemin = require('imagemin')
 var loaderUtils = require('loader-utils')
+var assign = require('object-assign')
 
-module.exports = function(content) {
+module.exports = function (content) {
   this.cacheable && this.cacheable()
 
-  var query = loaderUtils.parseQuery(this.query)
-	var minimize = ('minimize' in query) ? query.minimize : this.minimize
+  var options = assign({},
+    this.options.imagemin,
+    loaderUtils.parseQuery(this.query)
+  )
+
+  var minimize = ('minimize' in options) ? options.minimize : this.minimize
   if (!minimize) {
     return content
   }
 
-  var progressive = query.progressive || false
-  var optimizationLevel = query.optimizationLevel || 3
+  var progressive = options.progressive || false
+  var optimizationLevel = options.optimizationLevel || 3
 
   var imagemin = new Imagemin()
     .src(content)
-    .use(Imagemin.gifsicle({
+    .use(Imagemin.gifsicle(assign({
       interlaced: progressive
-    }))
-    .use(Imagemin.jpegtran({
+    }, options.gifsicle)))
+    .use(Imagemin.jpegtran(assign({
       progressive: progressive
-    }))
-    .use(Imagemin.optipng({
+    }, options.jpegtran)))
+    .use(Imagemin.optipng(assign({
       optimizationLevel: optimizationLevel
-    }))
-    .use(Imagemin.svgo())
+    }, options.optipng)))
+    .use(Imagemin.svgo(assign({
+    }, options.svgo)))
 
   var callback = this.async()
-  imagemin.run(function(err, files) {
+  imagemin.run(function (err, files) {
     callback(err, files[0].contents)
   })
 }
-module.exports.raw = true
 
+module.exports.raw = true

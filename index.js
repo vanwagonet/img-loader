@@ -1,4 +1,5 @@
 var Imagemin = require('imagemin')
+var ImageminPngquant = require('imagemin-pngquant')
 var loaderUtils = require('loader-utils')
 var assign = require('object-assign')
 
@@ -16,7 +17,7 @@ module.exports = function (content) {
   }
 
   var progressive = options.progressive || false
-  var optimizationLevel = options.optimizationLevel || 3
+  var optimizationLevel = options.optimizationLevel || 2
 
   var imagemin = new Imagemin()
     .src(content)
@@ -31,10 +32,14 @@ module.exports = function (content) {
     }, options.optipng)))
     .use(Imagemin.svgo(assign({
     }, options.svgo)))
+  if (options.pngquant) {
+    imagemin.use(ImageminPngquant(assign({
+    }, options.pngquant)))
+  }
 
   var callback = this.async()
   imagemin.run(function (err, files) {
-    callback(err, files[0].contents)
+    callback(err, files && files[0] && files[0].contents)
   })
 }
 

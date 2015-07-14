@@ -6,12 +6,13 @@ Image minimizing loader for webpack, meant to be used with [url-loader](https://
 
 *Issues with the minimized output should be reported [to imagemin](https://github.com/imagemin/imagemin/issues).*
 
-Imagemin comes bundled with the following optimizers:
+Comes with the following optimizers:
 
-- [gifsicle](https://github.com/kevva/imagemin-gifsicle) — *Compress GIF images*
-- [jpegtran](https://github.com/kevva/imagemin-jpegtran) — *Compress JPEG images*
-- [optipng](https://github.com/kevva/imagemin-optipng) — *Compress PNG images*
-- [svgo](https://github.com/kevva/imagemin-svgo) — *Compress SVG images*
+- [gifsicle](https://github.com/imagemin/imagemin-gifsicle) — *Compress GIF images*
+- [jpegtran](https://github.com/imagemin/imagemin-jpegtran) — *Compress JPEG images*
+- [optipng](https://github.com/imagemin/imagemin-optipng) — *Compress PNG images*
+- [pngquant](https://github.com/imagemin/imagemin-pngquant) — *Compress PNG images*
+- [svgo](https://github.com/imagemin/imagemin-svgo) — *Compress SVG images*
 
 
 ## Install
@@ -29,10 +30,19 @@ $ npm install img-loader --save-dev
 var url = require('file!img!./file.png');
 ```
 
-By default the minification is run when webpack is run in production mode
+By default the minification is run when webpack is run in production mode (or whenever the UglifyJsPlugin is used).
+
+The default minification includes:
+
+- `gifsicle` with `interlaced: false`
+- `jpegtran` with `progressive: false`
+- `optipng` with `optimizationLevel: 2`
+- `svgo` with default plugins
+
+`pngquant` is disabled by default, and can be enabled by configuring it in the advanced options.
 
 
-### Query Paramters
+### Query Parameters
 
 These are common options you can specify in the `require` or `loaders` config.
 
@@ -59,35 +69,18 @@ require('img?-minimize'); // makes the loader a simple passthrough
 
 #### optimizationLevel *(png)*
 
-Type: `number`  
-Default: `3`
-
-Select an optimization level between `0` and `7`.
-
-> The optimization level 0 enables a set of optimization operations that require minimal effort. There will be no changes to image attributes like bit depth or color type, and no recompression of existing IDAT datastreams. The optimization level 1 enables a single IDAT compression trial. The trial chosen is what. OptiPNG thinks it’s probably the most effective. The optimization levels 2 and higher enable multiple IDAT compression trials; the higher the level, the more trials.
-
-Level and trials:
-
-1. 1 trial
-2. 8 trials
-3. 16 trials
-4. 24 trials
-5. 48 trials
-6. 120 trials
-7. 240 trials
+Shortcut for [optipng `optimizationLevel`](https://github.com/imagemin/imagemin-optipng), which determines the number of trials.
 
 #### progressive *(jpg, gif)*
 
-Type: `boolean`  
-Default: `false`
-
-Enable jpegtran `progressive` lossless conversion to progressive.
-Enable gifsicle `interlace` for progressive rendering.
+Shortcut to enable [jpegtran `progressive`](https://github.com/imagemin/imagemin-jpegtran) and enable [gifsicle `interlace`](https://github.com/imagemin/imagemin-gifsicle) for progressive rendering.
 
 
 ### Advanced Options
 
 Advanced options can also be passed by specifying an `imagemin` property on your webpack config object. Each optimizer will be passed the corresponding property on the `imagemin` object as options.
+
+Any options specified this way override basic `optimizationLevel` and `progressive` options set. For more details on each plugin's options, see their documentation on [Github](https://github.com/imagemin).
 
 ``` javascript
 {
@@ -97,9 +90,16 @@ Advanced options can also be passed by specifying an `imagemin` property on your
     ]
   }
   imagemin: {
-    gifsicle: { interlaced: true },
-    jpegtran: { progressive: true },
+    gifsicle: { interlaced: false },
+    jpegtran: {
+      progressive: true,
+      arithmetic: false
+    },
     optipng: { optimizationLevel: 5 },
+    pngquant: {
+      floyd: 0.5,
+      speed: 2
+    },
     svgo: {
       plugins: [
         { removeTitle: true },

@@ -12,10 +12,10 @@
     "webpack-loader"
   ],
   "dependencies": {
-    "imagemin": "^3.2.0",
+    "imagemin": "^4.0.0",
     "imagemin-pngquant": "^4.1.2",
     "loader-utils": "^0.2.10",
-    "object-assign": "^3.0.0"
+    "object-assign": "^4.0.0"
   },
   "repository": {
     "type": "git",

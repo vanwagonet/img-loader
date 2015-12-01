@@ -39,7 +39,10 @@ module.exports = function (content) {
 
   var callback = this.async()
   imagemin.run(function (err, files) {
-    callback(err, files && files[0] && files[0].contents)
+    if (callback) {
+      callback(err, files && files[0] && files[0].contents)
+      callback = null
+    }
   })
 }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.2
+
+Make sure that the webpack callback is only called once
+
 ## 1.2.1
 
 Updated dependencies

@@ -6,11 +6,7 @@ var assign = require('object-assign')
 module.exports = function (content) {
   this.cacheable && this.cacheable()
 
-  var options = assign({},
-    this.options.imagemin,
-    loaderUtils.parseQuery(this.query)
-  )
-
+  var options = loaderUtils.getLoaderConfig(this, 'imagemin')
   var minimize = ('minimize' in options) ? options.minimize : this.minimize
   if (!minimize) {
     return content

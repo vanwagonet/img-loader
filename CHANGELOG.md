@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0
+
+Support `?config=otherConfig` to specify advanced options
+
 ## 1.2.2
 
 Make sure that the webpack callback is only called once

@@ -88,7 +88,7 @@ Any options specified this way override basic `optimizationLevel` and `progressi
     loaders: [
       { test: /\.(jpe?g|png|gif|svg)$/i, loaders: [ 'url?limit=10000', 'img?minimize' ] }
     ]
-  }
+  },
   imagemin: {
     gifsicle: { interlaced: false },
     jpegtran: {
@@ -110,6 +110,25 @@ Any options specified this way override basic `optimizationLevel` and `progressi
 }
 ```
 
+If you need to define two different loader configs, you can also change the config's property name via `img?config=otherConfig`:
+
+``` javascript
+{
+  module: {
+    loaders: [
+      { test: /\.svg$/i, loaders: [ 'url?limit=10000', 'img?config=svgOpts' ] }
+    ]
+  },
+  svgOpts: {
+    svgo: {
+      plugins: [
+        { removeTitle: true },
+        { convertPathData: false }
+      ]
+    }
+  }
+}
+```
 
 ## License
 

@@ -11,12 +11,6 @@
     "webpack",
     "webpack-loader"
   ],
-  "dependencies": {
-    "imagemin": "^4.0.0",
-    "imagemin-pngquant": "^4.1.2",
-    "loader-utils": "^0.2.10",
-    "object-assign": "^4.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "http://github.com/thetalecrafter/img-loader.git"
@@ -29,5 +23,21 @@
   "bugs": {
     "url": "https://github.com/thetalecrafter/img-loader/issues"
   },
-  "homepage": "https://github.com/thetalecrafter/img-loader"
+  "homepage": "https://github.com/thetalecrafter/img-loader",
+  "dependencies": {
+    "imagemin": "^5.0.0",
+    "imagemin-gifsicle": "^5.0.0",
+    "imagemin-jpegtran": "^5.0.0",
+    "imagemin-optipng": "^5.0.0",
+    "imagemin-pngquant": "^5.0.0",
+    "imagemin-svgo": "^5.0.0",
+    "loader-utils": "^0.2.15",
+    "object-assign": "^4.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  },
+  "scripts": {
+    "test": "mocha __tests__/*.spec.js"
+  }
 }

@@ -1,3 +1,5 @@
+'use strict'
+
 var imagemin = require('imagemin')
 var imageminGifsicle = require('imagemin-gifsicle')
 var imageminJpegtran = require('imagemin-jpegtran')

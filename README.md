@@ -1,5 +1,10 @@
 # img-loader
 
+[![npm Version][npm-image]][npm]
+[![Build Status][build-image]][build]
+[![JS Standard Style][style-image]][style]
+[![MIT License][license-image]][LICENSE]
+
 Image minimizing loader for webpack, meant to be used with [url-loader](https://github.com/webpack/url-loader), [file-loader](https://github.com/webpack/file-loader), or [raw-loader](https://github.com/webpack/raw-loader)
 
 > Minify PNG, JPEG, GIF and SVG images with [imagemin](https://github.com/imagemin/imagemin)
@@ -132,4 +137,13 @@ If you need to define two different loader configs, you can also change the conf
 
 ## License
 
-This software is free to use under the MIT license. See the [LICENSE-MIT file](https://github.com/thetalecrafter/img-loader/blob/master/LICENSE-MIT) for license text and copyright information.
+This software is free to use under the MIT license. See the [LICENSE-MIT file][LICENSE] for license text and copyright information.
+
+[npm]: https://www.npmjs.org/package/img-loader
+[npm-image]: https://img.shields.io/npm/v/img-loader.svg
+[build]: https://travis-ci.org/thetalecrafter/img-loader
+[build-image]: https://img.shields.io/travis/thetalecrafter/img-loader.svg
+[style]: https://github.com/feross/standard
+[style-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[license-image]: https://img.shields.io/npm/l/img-loader.svg
+[LICENSE]: https://github.com/thetalecrafter/img-loader/blob/master/LICENSE-MIT

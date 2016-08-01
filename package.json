@@ -35,7 +35,7 @@
     "object-assign": "^4.0.0"
   },
   "devDependencies": {
-    "mocha": "^2.5.3",
+    "mocha": "^3.0.0",
     "standard": "^7.1.2"
   },
   "scripts": {

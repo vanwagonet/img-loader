@@ -1,5 +1,7 @@
 # img-loader
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/thetalecrafter/img-loader.svg)](https://greenkeeper.io/)
+
 [![npm Version][npm-image]][npm]
 [![Build Status][build-image]][build]
 [![JS Standard Style][style-image]][style]

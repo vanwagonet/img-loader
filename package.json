@@ -31,7 +31,7 @@
     "imagemin-optipng": "^5.0.0",
     "imagemin-pngquant": "^5.0.0",
     "imagemin-svgo": "^5.0.0",
-    "loader-utils": "^0.2.15",
+    "loader-utils": "^1.0.0",
     "object-assign": "^4.0.0"
   },
   "devDependencies": {

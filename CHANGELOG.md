@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0
+
+Require Node 4. Support only webpack 2. Switch from jpegtran to mozjpeg.
+Switch to `enabled` option instead of detecting `minimize` from UglifyJSPlugin.
+
 ## 1.3.1
 
 Updated dependencies

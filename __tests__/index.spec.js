@@ -4,27 +4,49 @@
 var assert = require('assert')
 var loader = require('..')
 
-describe('img-loader', function () {
-  it('passes content through unmodified without minimize option', function () {
-    var img = new Buffer('<svg></svg>', 'utf8')
-    var context = { loader: loader, options: {} }
-    context.async = function () {
-      assert.fail('should not call async')
-    }
-    var buffer = context.loader(img)
-    assert.equal(buffer, img)
-  })
-
-  it('optimizes svg images', function (done) {
-    var img = new Buffer('<svg><g><path d="M0 0" /></g></svg>', 'utf8')
-    var context = { loader: loader, options: {}, minimize: true }
-    context.async = function () {
-      return function (error, buffer) {
-        if (error) return done(error)
-        assert.equal(buffer.toString(), '<svg/>')
-        done()
+describe('img-loader', () => {
+  describe('svgo', () => {
+    it('optimizes svg images by default', (done) => {
+      var img = new Buffer('<svg><g><path d="M0 0" /></g></svg>', 'utf8')
+      var context = {
+        loader,
+        async () {
+          return (error, buffer) => {
+            if (error) return done(error)
+            assert.equal(buffer.toString(), '<svg/>')
+            done()
+          }
+        }
       }
-    }
-    context.loader(img)
+      context.loader(img)
+    })
+
+    it('passes content through when whole loader disabled', () => {
+      var img = new Buffer('<svg></svg>', 'utf8')
+      var context = {
+        loader,
+        query: { enabled: false },
+        async () {
+          assert.fail('should not call async')
+        }
+      }
+      assert.equal(context.loader(img), img)
+    })
+
+    it('does not optimize when plugin disabled', (done) => {
+      var img = new Buffer('<svg></svg>', 'utf8')
+      var context = {
+        loader,
+        query: { svgo: false },
+        async () {
+          return (error, buffer) => {
+            if (error) return done(error)
+            assert.equal(buffer.toString(), '<svg></svg>')
+            done()
+          }
+        }
+      }
+      context.loader(img)
+    })
   })
 })

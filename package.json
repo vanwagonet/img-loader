@@ -36,7 +36,7 @@
   "devDependencies": {
     "mocha": "^3.0.0",
     "safe-buffer": "^5.0.1",
-    "standard": "^9.0.0"
+    "standard": "^10.0.1"
   },
   "scripts": {
     "pretest": "standard",

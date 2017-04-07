@@ -2,12 +2,13 @@
 'use strict'
 
 var assert = require('assert')
+var Buffer = require('safe-buffer').Buffer
 var loader = require('..')
 
 describe('img-loader', () => {
   describe('svgo', () => {
     it('optimizes svg images by default', (done) => {
-      var img = new Buffer('<svg><g><path d="M0 0" /></g></svg>', 'utf8')
+      var img = Buffer.from('<svg><g><path d="M0 0" /></g></svg>')
       var context = {
         loader,
         async () {
@@ -22,7 +23,7 @@ describe('img-loader', () => {
     })
 
     it('passes content through when whole loader disabled', () => {
-      var img = new Buffer('<svg></svg>', 'utf8')
+      var img = Buffer.from('<svg></svg>')
       var context = {
         loader,
         query: { enabled: false },
@@ -34,7 +35,7 @@ describe('img-loader', () => {
     })
 
     it('does not optimize when plugin disabled', (done) => {
-      var img = new Buffer('<svg></svg>', 'utf8')
+      var img = Buffer.from('<svg></svg>')
       var context = {
         loader,
         query: { svgo: false },

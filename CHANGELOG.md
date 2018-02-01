@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+Updated dependencies
+
 ## 2.0.0
 
 Require Node 4. Support only webpack 2. Switch from jpegtran to mozjpeg.

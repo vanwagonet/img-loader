@@ -1,5 +1,4 @@
 'use strict'
-var imagemin = require('imagemin')
 var loaderUtils = require('loader-utils')
 
 module.exports = function (content, map, meta) {
@@ -12,7 +11,7 @@ module.exports = function (content, map, meta) {
   }
 
   var callback = this.async()
-  imagemin
+  require('imagemin')
     .buffer(content, options)
     .then(function (buffer) { callback(null, buffer) })
     .catch(function (error) { callback(error) })

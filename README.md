@@ -7,19 +7,11 @@
 [![JS Standard Style][style-image]][style]
 [![MIT License][license-image]][LICENSE]
 
-Image minimizing loader for webpack 2, meant to be used with [url-loader](https://github.com/webpack/url-loader), [file-loader](https://github.com/webpack/file-loader), or [raw-loader](https://github.com/webpack/raw-loader)
+Image minimizing loader for webpack 4, meant to be used with [url-loader](https://github.com/webpack/url-loader), [file-loader](https://github.com/webpack/file-loader), or [raw-loader](https://github.com/webpack/raw-loader)
 
-> Minify PNG, JPEG, GIF and SVG images with [imagemin](https://github.com/imagemin/imagemin)
+> Minify PNG, JPEG, GIF and SVG images with [imagemin](https://github.com/imagemin/imagemin) [plugins](https://www.npmjs.com/search?q=keywords:imageminplugin)
 
-*Issues with the minimized output should be reported [to imagemin](https://github.com/imagemin/imagemin/issues).*
-
-Comes with the following optimizers:
-
-- [gifsicle](https://github.com/imagemin/imagemin-gifsicle) — *Compress GIF images*
-- [mozjpeg](https://github.com/imagemin/imagemin-mozjpeg) — *Compress JPEG images*
-- [optipng](https://github.com/imagemin/imagemin-optipng) — *Compress PNG images*
-- [pngquant](https://github.com/imagemin/imagemin-pngquant) — *Compress PNG images*
-- [svgo](https://github.com/imagemin/imagemin-svgo) — *Compress SVG images*
+img-loader has a peer dependency on `imagemin`, so you will need to make sure to include that, along with any imagemin plugins you will use.
 
 
 ## Install
@@ -31,7 +23,7 @@ $ npm install img-loader --save-dev
 
 ## Usage
 
-[Documentation: Using loaders](http://webpack.github.io/docs/using-loaders.html)
+[Documentation: Using loaders](https://webpack.js.org/concepts/loaders/)
 
 ```javascript
 module: {
@@ -47,18 +39,16 @@ module: {
 }
 ```
 
-The default minification includes: `gifsicle`, `mozjpeg`, `optipng`, & `svgo`. Each with their default settings.
-
-`pngquant` can be enabled by configuring it in the options.
+By default the loader simply passes along the image unmodified.
 
 
 ### Options
 
-Options can also be passed by specifying properties matching each optimizer in your rule options. `false` or `null` can be used to disable one of the default optimizers.
+Options are forwarded to `imagemin.buffer(image, options)`, so any plugins you would like to use for optimizing the images are passed as the `plugins` property.
 
 For more details on each plugin's options, see their documentation on [Github](https://github.com/imagemin).
 
-``` javascript
+```js
 {
   module: {
     rules: [
@@ -69,23 +59,59 @@ For more details on each plugin's options, see their documentation on [Github](h
           {
             loader: 'img-loader',
             options: {
-              enabled: process.env.NODE_ENV === 'production',
-              gifsicle: {
-                interlaced: false
-              },
-              mozjpeg: {
-                progressive: true,
-                arithmetic: false
-              },
-              optipng: false, // disabled
-              pngquant: {
-                floyd: 0.5,
-                speed: 2
-              },
-              svgo: {
-                plugins: [
-                  { removeTitle: true },
-                  { convertPathData: false }
+              plugins: [
+                require('imagemin-gifsicle')({
+                  interlaced: false
+                }),
+                require('imagemin-mozjpeg')({
+                  progressive: true,
+                  arithmetic: false
+                }),
+                require('imagemin-pngquant')({
+                  floyd: 0.5,
+                  speed: 2
+                }),
+                require('imagemin-svgo')({
+                  plugins: [
+                    { removeTitle: true },
+                    { convertPathData: false }
+                  ]
+                })
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+`plugins` can also be a function, which will receive the [webpack loader context](https://webpack.js.org/api/loaders/#the-loader-context) and should return the plugins array.
+```js
+{
+  module: {
+    rules: [
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          'url-loader?limit=10000',
+          {
+            loader: 'img-loader',
+            options: {
+              plugins (context) {
+                if (process.env.NODE_ENV === 'production') return []
+                return [
+                  require('imagemin-svgo')({
+                    plugins: [
+                      { cleanupIDs: false },
+                      {
+                        prefixIds: {
+                          prefix: path.basename(context.resourcePath, 'svg')
+                        }
+                      }
+                    ]
+                  })
                 ]
               }
             }
@@ -96,6 +122,50 @@ For more details on each plugin's options, see their documentation on [Github](h
   }
 }
 ```
+
+If you only want to run imagemin in production builds, you can omit the `img-loader` or leave plugins empty in your production configuration file. If you don't keep a separate configuration for prod builds, something like the following also works:
+
+```js
+{
+  loader: 'img-loader',
+  options: {
+    plugins: process.env.NODE_ENV === 'production' && [
+      require('imagemin-svgo')({})
+      // etc.
+    ]
+  }
+}
+```
+
+
+## Migrating from 2.x
+
+To get the default behavior from version `2.0.1`, you'll need to install these imagemin plugins:
+
+* [imagemin-gifsicle](https://github.com/imagemin/imagemin-gifsicle)
+* [imagemin-mozjpeg](https://github.com/imagemin/imagemin-mozjpeg)
+* [imagemin-optipng](https://github.com/imagemin/imagemin-optipng)
+* [imagemin-svgo](https://github.com/imagemin/imagemin-svgo)
+
+Then use this loader setup in your webpack configuration file:
+
+```js
+{
+  loader: 'img-loader',
+  options: {
+    plugins: [
+      require('imagemin-gifsicle')({}),
+      require('imagemin-mozjpeg')({}),
+      require('imagemin-optipng')({}),
+      require('imagemin-svgo')({})
+    ]
+  }
+}
+```
+
+The options object you had under a plugin's name property, should instead be passed directly to the plugin after you require it.
+
+If you used the optional `pngquant` settings, then you will additionally need to install [imagemin-pngquant](https://github.com/imagemin/imagemin-pngquant), and add it to your plugins array as any other imagemin plugin.
 
 
 ## License

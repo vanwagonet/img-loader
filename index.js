@@ -1,46 +1,18 @@
 'use strict'
-
-var imagemin = require('imagemin')
-var imageminGifsicle = require('imagemin-gifsicle')
-var imageminMozjpeg = require('imagemin-mozjpeg')
-var imageminOptipng = require('imagemin-optipng')
-var imageminPngquant = require('imagemin-pngquant')
-var imageminSvgo = require('imagemin-svgo')
 var loaderUtils = require('loader-utils')
 
-var defaults = {
-  enabled: true,
-  gifsicle: {},
-  mozjpeg: {},
-  optipng: {},
-  svgo: {}
-}
-
-module.exports = function (content) {
-  this.cacheable && this.cacheable()
-
-  var options = Object.assign(
-    Object.create(defaults),
-    loaderUtils.getOptions(this)
-  )
-  if (!options.enabled) {
-    return content
+module.exports = function (content, map, meta) {
+  var options = Object.assign({}, loaderUtils.getOptions(this))
+  if (typeof options.plugins === 'function') {
+    options.plugins = options.plugins(this)
   }
-
-  var use = [
-    options.gifsicle && imageminGifsicle(options.gifsicle),
-    options.mozjpeg && imageminMozjpeg(options.mozjpeg),
-    options.optipng && imageminOptipng(options.optipng),
-    options.svgo && imageminSvgo(options.svgo),
-    options.pngquant && imageminPngquant(options.pngquant)
-  ].filter(Boolean)
-  if (use.length === 0) {
+  if (!Array.isArray(options.plugins) || options.plugins.length === 0) {
     return content
   }
 
   var callback = this.async()
-  imagemin
-    .buffer(content, { use: use })
+  require('imagemin')
+    .buffer(content, options)
     .then(function (buffer) { callback(null, buffer) })
     .catch(function (error) { callback(error) })
 }

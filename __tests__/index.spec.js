@@ -1,53 +1,51 @@
 /* eslint-env mocha */
 'use strict'
-
 var assert = require('assert')
-var Buffer = require('safe-buffer').Buffer
-var loader = require('..')
+var fs = require('fs')
+var path = require('path')
+var gifsicle = require('imagemin-gifsicle')
+var svgo = require('imagemin-svgo')
+var run = require('./run-webpack')
+
+var fixtureGif = fs.readFileSync(path.resolve(__dirname, './fixture.gif'))
+var fixtureSvg = fs.readFileSync(path.resolve(__dirname, './fixture.svg'))
 
 describe('img-loader', () => {
-  describe('svgo', () => {
-    it('optimizes svg images by default', (done) => {
-      var img = Buffer.from('<svg><g><path d="M0 0" /></g></svg>')
-      var context = {
-        loader,
-        async () {
-          return (error, buffer) => {
-            if (error) return done(error)
-            assert.equal(buffer.toString(), '<svg/>')
-            done()
-          }
-        }
-      }
-      context.loader(img)
+  it('passes the img though unchanged by default', function () {
+    return run('./fixture.gif').then(function (image) {
+      assert(image.equals(fixtureGif), 'gif should be unchanged')
     })
+  })
 
-    it('passes content through when whole loader disabled', () => {
-      var img = Buffer.from('<svg></svg>')
-      var context = {
-        loader,
-        query: { enabled: false },
-        async () {
-          assert.fail('should not call async')
-        }
-      }
-      assert.equal(context.loader(img), img)
+  it('can apply optimizations for gif', function () {
+    return run('./fixture.gif', {
+      plugins: [ gifsicle({}) ]
+    }).then(function (image) {
+      assert(!image.equals(fixtureGif), 'gif should be changed')
+      assert(image.length < fixtureGif.length, 'optimized gif should be smaller')
     })
+  })
 
-    it('does not optimize when plugin disabled', (done) => {
-      var img = Buffer.from('<svg></svg>')
-      var context = {
-        loader,
-        query: { svgo: false },
-        async () {
-          return (error, buffer) => {
-            if (error) return done(error)
-            assert.equal(buffer.toString(), '<svg></svg>')
-            done()
-          }
-        }
+  it('can apply optimizations for svg', function () {
+    return run('./fixture.svg', {
+      plugins: [ svgo({}) ]
+    }).then(function (image) {
+      assert(!image.equals(fixtureSvg), 'svg should be changed')
+      assert(image.length < fixtureSvg.length, 'optimized svg should be smaller')
+      assert.equal(image.toString('utf8'), '<svg/>')
+    })
+  })
+
+  it('can use a function for plugins', function () {
+    var context
+    return run('./fixture.svg', {
+      plugins: function (ctx) {
+        context = ctx
+        return [ svgo({}) ]
       }
-      context.loader(img)
+    }).then(function (image) {
+      assert.equal(path.basename(context.resourcePath), 'fixture.svg')
+      assert(image.length < fixtureSvg.length, 'optimized svg should be smaller')
     })
   })
 })

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+
+**Breaking Change** By default no image optimizing is done. The options for the loader are passed directly to `imagemin.buffer`, so `options.plugins` should be passed as an array of configured imagemin plugins. If `plugins` is a function it will be called with the webpack loader context, and the plugin array should be returned.
+
 ## 2.0.1
 
 Updated dependencies

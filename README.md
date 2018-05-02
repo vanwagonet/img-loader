@@ -23,7 +23,7 @@ $ npm install img-loader --save-dev
 
 ## Usage
 
-[Documentation: Using loaders](http://webpack.github.io/docs/using-loaders.html)
+[Documentation: Using loaders](https://webpack.js.org/concepts/loaders/)
 
 ```javascript
 module: {

@@ -123,6 +123,50 @@ For more details on each plugin's options, see their documentation on [Github](h
 }
 ```
 
+If you only want to run imagemin in production builds, you can omit the `img-loader` or leave plugins empty in your production configuration file. If you don't keep a separate configuration for prod builds, something like the following also works:
+
+```js
+{
+  loader: 'img-loader',
+  options: {
+    plugins: process.env.NODE_ENV === 'production' && [
+      require('imagemin-svgo')({})
+      // etc.
+    ]
+  }
+}
+```
+
+
+## Migrating from 2.x
+
+To get the default behavior from version `2.0.1`, you'll need to install these imagemin plugins:
+
+* [imagemin-gifsicle](https://github.com/imagemin/imagemin-gifsicle)
+* [imagemin-mozjpeg](https://github.com/imagemin/imagemin-mozjpeg)
+* [imagemin-optipng](https://github.com/imagemin/imagemin-optipng)
+* [imagemin-svgo](https://github.com/imagemin/imagemin-svgo)
+
+Then use this loader setup in your webpack configuration file:
+
+```js
+{
+  loader: 'img-loader',
+  options: {
+    plugins: [
+      require('imagemin-gifsicle')({}),
+      require('imagemin-mozjpeg')({}),
+      require('imagemin-optipng')({}),
+      require('imagemin-svgo')({})
+    ]
+  }
+}
+```
+
+The options object you had under a plugin's name property, should instead be passed directly to the plugin after you require it.
+
+If you used the optional `pngquant` settings, then you will additionally need to install [imagemin-pngquant](https://github.com/imagemin/imagemin-pngquant), and add it to your plugins array as any other imagemin plugin.
+
 
 ## License
 

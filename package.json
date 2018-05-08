@@ -13,17 +13,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/thetalecrafter/img-loader.git"
+    "url": "http://github.com/vanwagonet/img-loader.git"
   },
   "author": {
     "name": "Andy VanWagoner",
-    "email": "andy@thetalecrafter.com"
+    "email": "andy@vanwago.net"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thetalecrafter/img-loader/issues"
+    "url": "https://github.com/vanwagonet/img-loader/issues"
   },
-  "homepage": "https://github.com/thetalecrafter/img-loader",
+  "homepage": "https://github.com/vanwagonet/img-loader",
   "dependencies": {
     "loader-utils": "^1.1.0"
   },

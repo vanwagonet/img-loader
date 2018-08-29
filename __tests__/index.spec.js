@@ -32,7 +32,7 @@ describe('img-loader', () => {
     }).then(function (image) {
       assert(!image.equals(fixtureSvg), 'svg should be changed')
       assert(image.length < fixtureSvg.length, 'optimized svg should be smaller')
-      assert.equal(image.toString('utf8'), '<svg/>')
+      assert.strictEqual(image.toString('utf8'), '<svg/>')
     })
   })
 
@@ -44,7 +44,7 @@ describe('img-loader', () => {
         return [ svgo({}) ]
       }
     }).then(function (image) {
-      assert.equal(path.basename(context.resourcePath), 'fixture.svg')
+      assert.strictEqual(path.basename(context.resourcePath), 'fixture.svg')
       assert(image.length < fixtureSvg.length, 'optimized svg should be smaller')
     })
   })

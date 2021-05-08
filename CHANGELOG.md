@@ -4,6 +4,8 @@
 
 **Breaking Change** Require Node 12+.
 
+Updated dependencies
+
 ## 3.0.2
 
 Updated dependencies

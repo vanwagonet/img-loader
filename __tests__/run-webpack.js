@@ -33,6 +33,9 @@ module.exports = function (entry, options) {
   compiler.outputFileSystem = new MemoryFS()
   return new Promise(function (resolve, reject) {
     compiler.run(function (error, stats) {
+      if (!error && stats.compilation.errors.length) {
+        error = stats.compilation.errors[0]
+      }
       return error ? reject(error) : resolve(stats.compilation.assets.image.source())
     })
   })

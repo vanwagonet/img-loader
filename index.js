@@ -11,9 +11,11 @@ module.exports = function (content, map, meta) {
   }
 
   var callback = this.async()
-  require('imagemin')
-    .buffer(content, options)
-    .then(function (buffer) { callback(null, buffer) })
+  import("imagemin")
+    .then(function (imagemin) {
+      imagemin.default.buffer(content, options)
+        .then(function (buffer) { callback(null, buffer) })
+    })
     .catch(function (error) { callback(error) })
 }
 

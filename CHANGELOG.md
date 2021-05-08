@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+**Breaking Change** Require Node 12+.
+
 ## 3.0.2
 
 Updated dependencies

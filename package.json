@@ -1,6 +1,6 @@
 {
   "name": "img-loader",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "Image minimizing loader for webpack 4",
   "keywords": [
     "image",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.1
+
+Update loader-utils as 1.1.0 is vulnerable to Regular Expression Denial of Service vie url variable. Which is patched in loader-utils >=1.4.2
+
 ## 4.0.0
 
 **Breaking Change** Require Node 12+.

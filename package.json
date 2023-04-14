@@ -1,6 +1,6 @@
 {
   "name": "img-loader",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Image minimizing loader for webpack 4",
   "keywords": [
     "image",
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/vanwagonet/img-loader",
   "dependencies": {
-    "loader-utils": "^1.1.0"
+    "loader-utils": "^3.2.1"
   },
   "engines": {
     "node": ">=12"
